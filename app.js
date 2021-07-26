@@ -12,6 +12,7 @@ const app = new Koa();
 
 // 创建定时任务
 const createScheduleJob = () => {
+  console.log("测试打印信息");
   let job = {};
 
   const [seconds, minutes, hours] = [
