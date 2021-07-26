@@ -11,7 +11,7 @@ const sendEmail = require("./utils/nodemailer");
 const app = new Koa();
 
 // 创建定时任务
-const createScheduleJob = (immediate) => {
+const createScheduleJob = () => {
   let job = {};
 
   const [seconds, minutes, hours] = [
@@ -20,18 +20,14 @@ const createScheduleJob = (immediate) => {
     randomNumber(23),
   ];
 
-  const rule = `${seconds} ${minutes} ${hours} * * *`;
-
-  if (immediate) {
-    initTask();
-  }
+  const rule = `2 0 15 * * *`;
 
   job = schedule.scheduleJob(rule, async () => {
-    if (job.cancel) {
-      job.cancel();
-      job = {};
-    }
-    createScheduleJob();
+    // if (job.cancel) {
+    //   job.cancel();
+    //   job = {};
+    // }
+    // createScheduleJob();
     initTask();
   });
 };
@@ -94,7 +90,7 @@ const initTask = async () => {
   }
 };
 
-createScheduleJob(true);
+createScheduleJob();
 
 app.listen(3001, () => {
   console.log("listen: localhost://3001");
