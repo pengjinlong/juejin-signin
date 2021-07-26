@@ -52,7 +52,10 @@ const initTask = async () => {
         // 签到成功,获得一次免费抽奖机会，先去抽奖
         const lotteryResult = await lotteryFree();
         if (lotteryResult.body.err_msg === "success") {
-          // 抽奖完成，发送
+          // 抽奖成功
+          sendEmail(2, lotteryResult.body.data)
+        } else {
+          sendEmail(2, false)
         }
         // 获取总分及签到信息
         const requests = [pointTotal, signInfo].map((fetchItem) => {
@@ -77,11 +80,11 @@ const initTask = async () => {
               seriesDays,
               totalDays,
             };
-            sendEmail(obj);
+            sendEmail(1, obj);
           })
           .catch((err) => {
             console.error(err);
-            sendEmail(false);
+            sendEmail(1, false);
           });
       }
     } else {
