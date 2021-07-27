@@ -3,7 +3,7 @@ name: juejin autosign
 on:
   push:
   schedule:
-    - cron: "* * * * *"
+    - cron: "*/5 * * * *"
 
 jobs:
   job1:
@@ -20,4 +20,6 @@ jobs:
       - name: npm install and do sign
         env:
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN  }}
-        run: ls
+        run: |
+          npm install
+          node app.js
