@@ -4,7 +4,7 @@ on:
   push:
     branches: [action]
   schedule:
-    - cron: "* * * * *"
+    - cron: "54,55 * * * *"
 
 jobs:
   one:
