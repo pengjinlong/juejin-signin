@@ -2,12 +2,11 @@ name: juejin autosign
 
 on:
   push:
-    branches: [action]
   schedule:
     - cron: "*/2 * * * *"
 
 jobs:
-  one:
+  job1:
     runs-on: ubuntu-latest
 
     steps:
