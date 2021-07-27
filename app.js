@@ -1,5 +1,3 @@
-const Koa = require("koa");
-const schedule = require("node-schedule");
 const {
   signIn,
   signInStatus,
@@ -7,39 +5,13 @@ const {
   signInfo,
   lotteryFree,
 } = require("./api/juejin");
+
 const sendEmail = require("./utils/nodemailer");
-const app = new Koa();
-
-// 创建定时任务
-const createScheduleJob = () => {
-  let job = {};
-
-  const [seconds, minutes, hours] = [
-    randomNumber(59),
-    randomNumber(59),
-    randomNumber(23),
-  ];
-
-  const rule = `2 24 18 * * *`;
-
-  job = schedule.scheduleJob(rule, async () => {
-    // if (job.cancel) {
-    //   job.cancel();
-    //   job = {};
-    // }
-    // createScheduleJob();
-    initTask();
-  });
-};
-
-// 创建随机数
-const randomNumber = (range) => {
-  const val = (Math.random() * range).toFixed(0);
-  return Number(val);
-};
 
 // 逻辑主入口
 const initTask = async () => {
+  sendEmail(1, false);
+  return false;
   const res = await signInStatus();
   const { err_msg, data } = res.body;
 
@@ -53,9 +25,9 @@ const initTask = async () => {
         const lotteryResult = await lotteryFree();
         if (lotteryResult.body.err_msg === "success") {
           // 抽奖成功
-          sendEmail(2, lotteryResult.body.data)
+          sendEmail(2, lotteryResult.body.data);
         } else {
-          sendEmail(2, false)
+          sendEmail(2, false);
         }
         // 获取总分及签到信息
         const requests = [pointTotal, signInfo].map((fetchItem) => {
@@ -93,8 +65,4 @@ const initTask = async () => {
   }
 };
 
-createScheduleJob();
-
-app.listen(3001, () => {
-  console.log("listen: localhost://3001");
-});
+initTask();
