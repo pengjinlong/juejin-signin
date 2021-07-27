@@ -16,7 +16,7 @@ const config = {
     // 发件人邮箱账号
     user: senderEmail,
     //发件人邮箱的授权码 这里可以通过qq邮箱获取 并且不唯一
-    pass: "",
+    pass: "sxfjguxxmlnxidec",
   },
 };
 
