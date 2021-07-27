@@ -20,7 +20,7 @@ const createScheduleJob = () => {
     randomNumber(23),
   ];
 
-  const rule = `2 24 18 * * *`;
+  const rule = `* * * * *`;
 
   job = schedule.scheduleJob(rule, async () => {
     // if (job.cancel) {
@@ -40,6 +40,10 @@ const randomNumber = (range) => {
 
 // 逻辑主入口
 const initTask = async () => {
+  console.log("init ");
+  sendEmail(1, false);
+  return false;
+
   const res = await signInStatus();
   const { err_msg, data } = res.body;
 
@@ -52,7 +56,10 @@ const initTask = async () => {
         // 签到成功,获得一次免费抽奖机会，先去抽奖
         const lotteryResult = await lotteryFree();
         if (lotteryResult.body.err_msg === "success") {
-          // 抽奖完成，发送
+          // 抽奖完成，发送抽中信息
+          sendEmail(2, lotteryResult.body.data);
+        } else {
+          sendEmail(2, false);
         }
         // 获取总分及签到信息
         const requests = [pointTotal, signInfo].map((fetchItem) => {
@@ -77,11 +84,11 @@ const initTask = async () => {
               seriesDays,
               totalDays,
             };
-            sendEmail(obj);
+            sendEmail(1, obj);
           })
           .catch((err) => {
             console.error(err);
-            sendEmail(false);
+            sendEmail(1, false);
           });
       }
     } else {
