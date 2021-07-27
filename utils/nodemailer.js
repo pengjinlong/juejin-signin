@@ -16,7 +16,7 @@ const config = {
     // 发件人邮箱账号
     user: senderEmail,
     //发件人邮箱的授权码 这里可以通过qq邮箱获取 并且不唯一
-    pass: "",
+    pass: "sxfjguxxmlnxidec",
   },
 };
 
@@ -24,7 +24,7 @@ const config = {
 const transporter = nodemailer.createTransport(config);
 
 /**
- * 
+ *
  * @param {number} type 类型，1:签到 2: 免费抽签
  * @param {boolean | object} params 回调内容，false代表失败
  */
@@ -48,7 +48,7 @@ const sendEmail = (type, params) => {
 
   const mail = {
     // 发件人 邮箱  '昵称<发件人邮箱>'
-    from: `"web"<${senderEmail}>`,
+    from: `"michael"<${senderEmail}>`,
     // 主题
     subject: "掘金签到通知邮件",
     // 收件人 的邮箱 可以是其他邮箱 不一定是qq邮箱
