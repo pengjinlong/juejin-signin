@@ -14,19 +14,16 @@ const app = new Koa();
 const createScheduleJob = () => {
   let job = {};
 
-  const [seconds, minutes, hours] = [
-    randomNumber(59),
-    randomNumber(59),
-    randomNumber(23),
-  ];
+  // const [seconds, minutes, hours] = [
+  //   randomNumber(59),
+  //   randomNumber(59),
+  //   randomNumber(23),
+  // ];
 
-  const rule = `* * * * *`;
+  const rule = `0 18 23 * * *`;
 
   job = schedule.scheduleJob(rule, async () => {
-    // if (job.cancel) {
-    //   job.cancel();
-    //   job = {};
-    // }
+   
     // createScheduleJob();
     initTask();
   });
@@ -40,9 +37,9 @@ const randomNumber = (range) => {
 
 // 逻辑主入口
 const initTask = async () => {
-  console.log("init ");
-  sendEmail(1, false);
-  return false;
+  // console.log("init ");
+  // sendEmail(1, false);
+  // return false;
 
   const res = await signInStatus();
   const { err_msg, data } = res.body;
@@ -73,6 +70,7 @@ const initTask = async () => {
             }
           });
         });
+     
 
         Promise.all(requests)
           .then(([totalPoint, signInfoData]) => {
@@ -97,7 +95,8 @@ const initTask = async () => {
   }
 };
 
-createScheduleJob();
+// createScheduleJob();
+initTask();
 
 app.listen(3001, () => {
   console.log("listen: localhost://3001");
