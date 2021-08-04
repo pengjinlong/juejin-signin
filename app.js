@@ -11,19 +11,19 @@ const sendEmail = require("./utils/nodemailer");
 // 逻辑主入口
 const initTask = async () => {
   const res = await signInStatus();
-  const { err_msg, data } = res.body;
+  const { err_msg, data } = res;
 
   if (err_msg === "success") {
     if (!data) {
       // 没有签到，发起签到
       const params = {};
       const res1 = await signIn(params);
-      if (res1.body.err_msg === "success") {
+      if (res1.err_msg === "success") {
         // 签到成功,获得一次免费抽奖机会，先去抽奖
         const lotteryResult = await lotteryFree();
-        if (lotteryResult.body.err_msg === "success") {
+        if (lotteryResult.err_msg === "success") {
           // 抽奖成功
-          sendEmail(2, lotteryResult.body.data);
+          sendEmail(2, lotteryResult.data);
         } else {
           sendEmail(2, false);
         }
@@ -31,7 +31,7 @@ const initTask = async () => {
         const requests = [pointTotal, signInfo].map((fetchItem) => {
           return new Promise(async (resolve, reject) => {
             const result = await fetchItem();
-            const { err_msg, data } = result.body;
+            const { err_msg, data } = result;
             if (err_msg === "success") {
               resolve(data);
             } else {
