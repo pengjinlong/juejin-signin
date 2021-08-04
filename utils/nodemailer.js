@@ -41,8 +41,8 @@ const sendEmail = (type, params) => {
     if (!params) {
       mailContent = "<b>自动抽奖失败啦，请检查代码</b>";
     } else {
-      const { totalPoint, seriesDays, totalDays } = params;
-      mailContent = `<b>今有${totalPoint}矿石, 已经连续签到${seriesDays}天, 累计签到${totalDays}天</b>`;
+      const { lottery_name } = params;
+      mailContent = `<b>免费抽奖成功，获得${lottery_name} `;
     }
   }
 

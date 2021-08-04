@@ -8,56 +8,34 @@ const {
   lotteryFree,
 } = require("./api/juejin");
 const sendEmail = require("./utils/nodemailer");
+
 const app = new Koa();
 
 // 创建定时任务
 const createScheduleJob = () => {
-  let job = {};
+  const rule = `1 10 * * *`;
 
-  const [seconds, minutes, hours] = [
-    randomNumber(59),
-    randomNumber(59),
-    randomNumber(23),
-  ];
-
-  const rule = `* * * * *`;
-
-  job = schedule.scheduleJob(rule, async () => {
-    // if (job.cancel) {
-    //   job.cancel();
-    //   job = {};
-    // }
-    // createScheduleJob();
+  schedule.scheduleJob(rule, async () => {
     initTask();
   });
 };
 
-// 创建随机数
-const randomNumber = (range) => {
-  const val = (Math.random() * range).toFixed(0);
-  return Number(val);
-};
-
 // 逻辑主入口
 const initTask = async () => {
-  console.log("init ");
-  sendEmail(1, false);
-  return false;
-
   const res = await signInStatus();
-  const { err_msg, data } = res.body;
+  const { err_msg, data } = res;
 
   if (err_msg === "success") {
     if (!data) {
       // 没有签到，发起签到
       const params = {};
       const res1 = await signIn(params);
-      if (res1.body.err_msg === "success") {
-        // 签到成功,获得一次免费抽奖机会，先去抽奖
+      if (res1.err_msg === "success") {
+        // 签到成功,获得一次免费抽奖机会，去抽奖
         const lotteryResult = await lotteryFree();
-        if (lotteryResult.body.err_msg === "success") {
+        if (lotteryResult.err_msg === "success") {
           // 抽奖完成，发送抽中信息
-          sendEmail(2, lotteryResult.body.data);
+          sendEmail(2, lotteryResult.data);
         } else {
           sendEmail(2, false);
         }
@@ -65,7 +43,7 @@ const initTask = async () => {
         const requests = [pointTotal, signInfo].map((fetchItem) => {
           return new Promise(async (resolve, reject) => {
             const result = await fetchItem();
-            const { err_msg, data } = result.body;
+            const { err_msg, data } = result;
             if (err_msg === "success") {
               resolve(data);
             } else {
@@ -99,6 +77,6 @@ const initTask = async () => {
 
 createScheduleJob();
 
-app.listen(3001, () => {
-  console.log("listen: localhost://3001");
-});
+// app.listen(3001, () => {
+//   console.log("listen: localhost://3001");
+// });
