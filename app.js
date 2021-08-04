@@ -10,8 +10,6 @@ const sendEmail = require("./utils/nodemailer");
 
 // 逻辑主入口
 const initTask = async () => {
-  sendEmail(1, false);
-  return false;
   const res = await signInStatus();
   const { err_msg, data } = res.body;
 
