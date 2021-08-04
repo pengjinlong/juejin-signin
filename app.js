@@ -51,6 +51,7 @@ const initTask = async () => {
             }
           });
         });
+     
 
         Promise.all(requests)
           .then(([totalPoint, signInfoData]) => {
@@ -75,7 +76,8 @@ const initTask = async () => {
   }
 };
 
-createScheduleJob();
+// createScheduleJob();
+initTask();
 
 // app.listen(3001, () => {
 //   console.log("listen: localhost://3001");
