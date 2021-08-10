@@ -3,7 +3,7 @@ name: juejin autosign
 on:
   push:
   schedule:
-    - cron: "12 18 * * *"
+    - cron: "43 16 * * *"
 
 jobs:
   job1:
